@@ -1,0 +1,33 @@
+name: 02 - Gatilhos
+
+# push em qualquer branch
+on:
+  push:
+    branches: [main, develop]     # apenas nessas branches
+    paths:
+      - 'src/**'                  # apenas se arquivos em src/ mudaram
+
+  pull_request:
+    branches: [main]              # PRs direcionados à main
+
+  schedule:
+    - cron: '0 8 * * 1-5'        # toda segunda a sexta às 08h UTC
+
+  workflow_dispatch:              # disparo manual pelo GitHub
+    inputs:
+      mensagem:
+        description: 'Mensagem personalizada'
+        required: true
+        default: 'Rodando manualmente!'
+
+jobs:
+  exibir-gatilho:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Qual gatilho disparou?
+        run: echo "Gatilho: ${{ github.event_name }}"
+
+      - name: Mensagem manual (só aparece no workflow_dispatch)
+        if: github.event_name == 'workflow_dispatch'
+        run: echo "${{ github.event.inputs.mensagem }}"

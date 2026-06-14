@@ -1,0 +1,23 @@
+name: 01 - Hello World
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  hello:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Exibir mensagem
+        run: echo "Hello, GitHub Actions!"
+
+      - name: Exibir data e hora
+        run: date
+
+      - name: Exibir variáveis do ambiente
+        run: |
+          echo "Repositório: $GITHUB_REPOSITORY"
+          echo "Branch: $GITHUB_REF_NAME"
+          echo "Commit: $GITHUB_SHA"
+          echo "Autor: $GITHUB_ACTOR"

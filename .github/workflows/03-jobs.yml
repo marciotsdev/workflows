@@ -1,0 +1,36 @@
+name: 03 - Jobs em sequencia e paralelo
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  # ── Jobs A e B rodam em PARALELO (sem dependência) ────────────────────────
+  job-a:
+    name: Job A (paralelo)
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Job A rodando..." && sleep 3 && echo "Job A concluido"
+
+  job-b:
+    name: Job B (paralelo)
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Job B rodando..." && sleep 3 && echo "Job B concluido"
+
+  # ── Job C roda em SEQUÊNCIA — só começa quando A e B terminarem ───────────
+  job-c:
+    name: Job C (aguarda A e B)
+    runs-on: ubuntu-latest
+    needs: [job-a, job-b]
+    steps:
+      - run: echo "Job C rodando depois de A e B!"
+
+  # ── Job D roda só se job-c falhar ─────────────────────────────────────────
+  job-d:
+    name: Job D (rollback em caso de falha)
+    runs-on: ubuntu-latest
+    needs: job-c
+    if: failure()
+    steps:
+      - run: echo "Job C falhou! Executando rollback..."
