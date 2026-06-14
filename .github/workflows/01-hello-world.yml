@@ -21,4 +21,4 @@ jobs:
           echo "Branch: $GITHUB_REF_NAME"
           echo "Commit: $GITHUB_SHA"
           echo "Autor: $GITHUB_ACTOR"
-          sleep 120
+          sleep 60
